@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: ingress
+metadata:
+  name: demo-app-ingress
+  namespace: default
+spec:
+  ingressClassName: nginx
+  rules:
+  - http: 
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: demo-app-active
+            port:
+              number: 80
+              

@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo-app-active #Blue envirnment 
+  namespace: default
+spec:
+  selector:
+    app: demo-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo-app-preview  # Green envirnment
+  namespace: default
+spec:
+  selector:
+    app: demo-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      name: http

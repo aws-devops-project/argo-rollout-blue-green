@@ -21,7 +21,7 @@ resource "aws_instance" "kind_lab" {
 
       spot_instance_type = var.spot_type
 
-      # instance_interruption_behavior = "stop"
+      instance_interruption_behavior = "stop"
 
     }
 

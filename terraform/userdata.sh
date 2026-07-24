@@ -109,3 +109,4 @@ apt-get clean
 echo "Bootstrap completed successfully."
 
 touch /opt/kind-lab/bootstrap-complete
+

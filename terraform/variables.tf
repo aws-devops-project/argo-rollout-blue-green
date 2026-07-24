@@ -64,6 +64,7 @@ variable "spot_type" {
   description = "Spot request type"
   type        = string
   default     = "one-time"
+  # default     = "stop"
 }
 
 ########################################

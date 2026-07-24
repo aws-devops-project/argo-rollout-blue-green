@@ -110,3 +110,35 @@ echo "Bootstrap completed successfully."
 
 touch /opt/kind-lab/bootstrap-complete
 
+git clone https://github.com/aws-devops-project/argo-rollout-blue-green.git
+
+
+
+#!/bin/bash
+
+# 1. Create the shutdown service
+cat <<'EOF' > /etc/systemd/system/auto-shutdown.service
+[Unit]
+Description=Automatic System Shutdown Service
+
+[Service]
+Type=oneshot
+ExecStart=/sbin/shutdown -h now
+EOF
+
+# 2. Create the 8-hour timer
+cat <<'EOF' > /etc/systemd/system/auto-shutdown.timer
+[Unit]
+Description=Timer to shut down server 8 hours after boot
+
+[Timer]
+OnBootSec=8h
+Unit=auto-shutdown.service
+
+[Install]
+WantedBy=timers.target
+EOF
+
+# 3. Reload systemd and start the timer immediately
+systemctl daemon-reload
+systemctl enable --now auto-shutdown.timer

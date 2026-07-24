@@ -1,0 +1,20 @@
+controller:
+  kind: Deployment
+
+  hostNetwork: true
+
+  dnsPolicy: ClusterFirstWithHostNet
+
+  service:
+    type: ClusterIP
+
+  ingressClassResource:
+    name: nginx
+    enabled: true
+    default: true
+
+  admissionWebhooks:
+    enabled: true
+
+defaultBackend:
+  enabled: false

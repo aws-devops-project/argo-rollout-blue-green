@@ -6,12 +6,11 @@ metadata:
 spec:
   project: default
   source:
-    # REPLACE WITH YOUR GITHUB REPO URL
-    repoURL: 'https://github.com/aws-devops-project/argo-rollout-blue-green.git'
+    repoURL: https://github.com/aws-devops-project/argo-rollout-blue-green.git
     targetRevision: HEAD
-    path: apps
+    path: apps/demo/overlays/blue
   destination:
-    server: 'https://kubernetes.default.svc'
+    server: https://kubernetes.default.svc
     namespace: default
   syncPolicy:
     automated:

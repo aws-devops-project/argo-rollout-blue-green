@@ -3,29 +3,11 @@ apiVersion: kind.x-k8s.io/v1alpha4
 
 name: kind-bluegreen
 
-networking:
-
-  apiServerAddress: "0.0.0.0"
-
-  apiServerPort: 6443
-
 nodes:
-
-###########################################################
-# Control Plane
-###########################################################
 
 - role: control-plane
 
   image: kindest/node:v1.34.0
-
-  kubeadmConfigPatches:
-
-  - |
-    kind: InitConfiguration
-    nodeRegistration:
-      kubeletExtraArgs:
-        node-labels: "ingress-ready=true,node-role.kubernetes.io/control-plane=true"
 
   extraPortMappings:
 
@@ -37,34 +19,10 @@ nodes:
     hostPort: 443
     protocol: TCP
 
-###########################################################
-# Worker 1
-###########################################################
-
 - role: worker
 
   image: kindest/node:v1.34.0
 
-  kubeadmConfigPatches:
-
-  - |
-    kind: JoinConfiguration
-    nodeRegistration:
-      kubeletExtraArgs:
-        node-labels: "node-role.kubernetes.io/worker=true"
-
-###########################################################
-# Worker 2
-###########################################################
-
 - role: worker
 
   image: kindest/node:v1.34.0
-
-  kubeadmConfigPatches:
-
-  - |
-    kind: JoinConfiguration
-    nodeRegistration:
-      kubeletExtraArgs:
-        node-labels: "node-role.kubernetes.io/worker=true"

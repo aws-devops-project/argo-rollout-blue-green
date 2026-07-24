@@ -111,7 +111,8 @@ echo "Bootstrap completed successfully."
 touch /opt/kind-lab/bootstrap-complete
 
 git clone https://github.com/aws-devops-project/argo-rollout-blue-green.git
-
+mv argo-rollout-blue-green/ /home/ubuntu/
+chown -R ubuntu:ubuntu /home/ubuntu/argo-rollout-blue-green
 
 
 #!/bin/bash

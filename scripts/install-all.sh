@@ -110,9 +110,9 @@ if ! command -v helm >/dev/null 2>&1; then
 
 fi
 
-
+kind create cluster --config */kind/kind-config.yaml
+cd /home/ubuntu
 git clone https://github.com/aws-devops-project/argo-rollout-blue-green.git
-
 
 ########################################
 # Verify
@@ -139,6 +139,7 @@ echo
 echo "Then run"
 
 echo
+cd /home/ubuntu/argo-rollout-blue-green
 
 echo "kind create cluster --config kind/kind-config.yaml"
 

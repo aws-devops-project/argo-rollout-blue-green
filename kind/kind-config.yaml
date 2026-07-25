@@ -3,14 +3,15 @@ apiVersion: kind.x-k8s.io/v1alpha4
 
 name: kind-bluegreen
 
+networking:
+  apiServerAddress: "0.0.0.0"
+  apiServerPort: 6443
+
 nodes:
-
 - role: control-plane
-
-  image: kindest/node:v1.34.0
+  image: kindest/node:v1.33.1
 
   extraPortMappings:
-
   - containerPort: 80
     hostPort: 80
     protocol: TCP
@@ -20,9 +21,7 @@ nodes:
     protocol: TCP
 
 - role: worker
-
-  image: kindest/node:v1.34.0
+  image: kindest/node:v1.33.1
 
 - role: worker
-
-  image: kindest/node:v1.34.0
+  image: kindest/node:v1.33.1

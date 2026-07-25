@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Blue Environment</title>
+
+<style>
+
+body{
+
+background:#1565C0;
+
+font-family:Arial;
+
+color:white;
+
+text-align:center;
+
+}
+
+.container{
+
+margin-top:70px;
+
+}
+
+table{
+
+margin:auto;
+
+border-collapse:collapse;
+
+font-size:22px;
+
+}
+
+td{
+
+padding:10px 20px;
+
+border:1px solid white;
+
+}
+
+h1{
+
+font-size:60px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🔵 BLUE ENVIRONMENT</h1>
+
+<h2>Version 1</h2>
+
+<table id="info"></table>
+
+</div>
+
+<script>
+
+fetch("/api/info")
+
+.then(r=>r.json())
+
+.then(data=>{
+
+let html="";
+
+for(const key in data){
+
+html+=`<tr><td>${key}</td><td>${data[key]}</td></tr>`;
+
+}
+
+document.getElementById("info").innerHTML=html;
+
+});
+
+</script>
+
+</body>
+
+</html>

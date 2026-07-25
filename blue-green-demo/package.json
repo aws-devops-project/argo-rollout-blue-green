@@ -1,0 +1,12 @@
+{
+  "name": "blue-green-demo",
+  "version": "1.0.0",
+  "description": "Argo Rollouts Blue Green Demo",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}

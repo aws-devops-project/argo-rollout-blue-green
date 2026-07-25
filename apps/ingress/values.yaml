@@ -9,12 +9,11 @@ controller:
     type: ClusterIP
 
   ingressClassResource:
-    name: nginx
     enabled: true
+    name: nginx
     default: true
 
-  admissionWebhooks:
-    enabled: true
+  watchIngressWithoutClass: false
 
 defaultBackend:
   enabled: false

@@ -1,0 +1,47 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+
+metadata:
+  name: demo-rollout
+  namespace: demo
+
+spec:
+  replicas: 2
+
+  revisionHistoryLimit: 2
+
+  selector:
+    matchLabels:
+      app: demo
+
+  template:
+    metadata:
+      labels:
+        app: demo
+
+    spec:
+      containers:
+
+      - name: demo
+
+        image: ealen/echo-server:latest
+
+        ports:
+        - containerPort: 80
+
+        env:
+        - name: PORT
+          value: "80"
+
+        - name: TEXT
+          value: "🔵 Welcome to BLUE Environment"
+
+  strategy:
+
+    blueGreen:
+
+      activeService: demo-active
+
+      previewService: demo-preview
+
+      autoPromotionEnabled: false

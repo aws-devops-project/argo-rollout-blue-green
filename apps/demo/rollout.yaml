@@ -24,7 +24,7 @@ spec:
 
       - name: demo
 
-        image: ealen/echo-server:latest
+        image: argoproj/rollouts-demo:blue
 
         ports:
         - containerPort: 80
@@ -32,9 +32,6 @@ spec:
         env:
         - name: PORT
           value: "80"
-
-        - name: TEXT
-          value: "🟢 Welcome to GREEN Environment"
 
   strategy:
 

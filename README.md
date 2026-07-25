@@ -154,3 +154,9 @@ Bootstrap logs are written to:
 cd terraform
 terraform destroy
 ```
+
+
+
+git add .
+git commit -m "Initial commit"
+git push -u origin main

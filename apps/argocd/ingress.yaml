@@ -1,19 +1,47 @@
 apiVersion: networking.k8s.io/v1
+
 kind: Ingress
+
 metadata:
+
   name: argocd
+
   namespace: argocd
+
+  annotations:
+
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+
 spec:
+
   ingressClassName: nginx
 
+  tls:
+
+  - hosts:
+
+      - argocd.sprinckl.info
+
+    secretName: argocd-tls
+
   rules:
+
   - host: argocd.sprinckl.info
+
     http:
+
       paths:
+
       - path: /
+
         pathType: Prefix
+
         backend:
+
           service:
+
             name: argocd-server
+
             port:
+
               number: 80

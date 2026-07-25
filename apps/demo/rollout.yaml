@@ -8,7 +8,7 @@ metadata:
 spec:
   replicas: 2
 
-  revisionHistoryLimit: 2
+  revisionHistoryLimit: 3
 
   selector:
     matchLabels:
@@ -24,14 +24,38 @@ spec:
 
       - name: demo
 
-        image: argoproj/rollouts-demo:blue
+        image: shubham808/blue-green-demo:v1
+
+        imagePullPolicy: Always
 
         ports:
-        - containerPort: 80
+        - containerPort: 3000
 
-        env:
-        - name: PORT
-          value: "80"
+        # env:
+
+        # - name: ENVIRONMENT
+        #   value: BLUE
+
+        # - name: VERSION
+        #   value: v1
+
+        # - name: REGION
+        #   value: eu-west-2
+
+        # - name: POD_NAME
+        #   valueFrom:
+        #     fieldRef:
+        #       fieldPath: metadata.name
+
+        # - name: POD_IP
+        #   valueFrom:
+        #     fieldRef:
+        #       fieldPath: status.podIP
+
+        # - name: NODE_NAME
+        #   valueFrom:
+        #     fieldRef:
+        #       fieldPath: spec.nodeName
 
   strategy:
 

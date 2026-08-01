@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: web-health-check
+  namespace: demo
+spec:
+  args:
+  - name: service-name
+  metrics:
+  - name: http-check
+    interval: 5s
+    count: 60      # 5 minutes of testing time
+    failureLimit: 2
+    provider:
+      web:
+        url: "http://{{args.service-name}}.demo.svc.cluster.local/"
+        timeoutSeconds: 2

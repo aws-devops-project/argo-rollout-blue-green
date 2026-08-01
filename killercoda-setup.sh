@@ -123,3 +123,121 @@ spec:
 EOF
 
 echo "✅ All YAML files created successfully in ~/fresh-blue-green-lab"
+
+
+
+#=============================================
+#  with nodePort, we can access the services 
+#  from outside the cluster.
+# 
+#  open port 30081 and 30082 for the services
+#
+# ============================================
+# 2. Create the Namespace file
+cat <<EOF > 01-namespace.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: demo
+EOF
+
+cat <<EOF > 02-services.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: rollout-bluegreen-active
+  namespace: demo
+spec:
+  type: NodePort
+  selector:
+    app: rollout-bluegreen
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+    nodePort: 30081
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rollout-bluegreen-preview
+  namespace: demo
+spec:
+  type: NodePort
+  selector:
+    app: rollout-bluegreen
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+    nodePort: 30082
+EOF 
+
+
+
+# =============================================
+# Step 1: Create the Automated Analysis Rules
+# Run this entire block in your ~/fresh-blue-green-lab directory. 
+# This creates the AnalysisTemplate and updates your Rollout file to enforce a Pre-Promotion Analysis.
+# =============================================
+# 1. Create the Analysis Template
+cat <<EOF > 04-analysis.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: web-health-check
+  namespace: demo
+spec:
+  args:
+  - name: service-name
+  metrics:
+  - name: http-check
+    interval: 5s         # Ping the service every 5 seconds
+    count: 20            # Run 20 checks (gives you 100 seconds to test the sliders)
+    failureLimit: 2      # If it fails 2 times, instantly abort the rollout!
+    provider:
+      web:
+        url: "http://{{args.service-name}}.demo.svc.cluster.local/"
+        timeoutSeconds: 2 # If latency goes above 2 seconds, it counts as a failure
+EOF
+
+# 2. Update the Rollout to use the Analysis Template
+cat <<EOF > 03-rollout.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: rollout-bluegreen
+  namespace: demo
+spec:
+  replicas: 2
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: rollout-bluegreen
+  template:
+    metadata:
+      labels:
+        app: rollout-bluegreen
+    spec:
+      containers:
+      - name: rollouts-demo
+        image: argoproj/rollouts-demo:blue
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+  strategy:
+    blueGreen: 
+      activeService: rollout-bluegreen-active
+      previewService: rollout-bluegreen-preview
+      autoPromotionEnabled: false
+      prePromotionAnalysis: # This block attaches the automation
+        templates:
+        - templateName: web-health-check
+        args:
+        - name: service-name
+          value: rollout-bluegreen-preview
+EOF
+
+# 3. Apply the updated configuration
+kubectl apply -f .

@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/aws-devops-project/argo-rollout-blue-green.git
     targetRevision: HEAD
-    path: app/demo
+    path: apps/demo
   destination:
     server: https://kubernetes.default.svc
     namespace: demo
